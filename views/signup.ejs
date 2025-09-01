@@ -1,0 +1,49 @@
+<% include  ./partials/header.ejs %>
+<% include ./partials/navbar.ejs %>
+  <div class="w-full mt-16 h-[90vh] bg-center bg-cover bg-[url('/images/pin-bg-1.jpg')]">
+  <div class="flex items-center justify-center">
+    <div class=" mt-2 w-[400px] bg-white px-4 py-5 rounded-4xl">        
+        <div class="flex items-center justify-center mb-5">
+            <img class="size-[40px] items-center" src="data:image/png;base64,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"/>
+        </div>
+        <h1 class="text-3xl font-bold text-center">Welcome to Pinterest</h1>
+        <h1 class="text-center mb-5" style="font-family: Arial, Helvetica, sans-serif;">Find new ideas to try</h1>
+        <form action="/signup" method="POST">
+            <div class="flex flex-col px-10 gap-2">
+
+                <label for="email">Email</label>
+                <input 
+                type="email" 
+                name="email" 
+                placeholder="Email"
+                class="rounded-xl p-2 border border-gray-400"/>
+
+                <label for="username">Username</label>
+                <input 
+                type="text" 
+                name="username" 
+                placeholder="Username"
+                class="rounded-xl p-2 border border-gray-400"/>
+
+                <label for="password">Password</label>
+                <input 
+                type="password" 
+                name="password" 
+                placeholder="Password"
+                class="rounded-xl p-2 border border-gray-400"/>
+
+                <button 
+                type="submit"
+                class="bg-red-500 text-white p-2 rounded-xl">
+                Continue
+                </button>
+
+                <p class="text-center text-[12px] text-gray-300">By continuing, you agree to Pinterest's Terms of Service and acknowledge you've read our Privacy Policy. Notice at collection.</p>
+
+                <p class="text-sm text-center">Already a member?<a href="/login" class="decoration:none font-bold">Log in</a></p>
+            </div>
+        </form>
+    </div>
+  </div>
+  </div>
+<% include  ./partials/footer.ejs %>
