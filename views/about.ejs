@@ -1,0 +1,86 @@
+<%- include('partials/header') %>
+<!--Navbar-->
+  <nav class="fixed h-16 top-0 left-0 w-full z-50 bg-white shadow-md flex justify-between items-center px-6">
+  <!-- Logo -->
+  <a href="/" class="text-red-600 text-xl font-bold">Pinterest</a>
+
+  <!-- Navigation Links -->
+  <div class="flex items-center gap-4">
+    <a href="/explore" class="hover:text-red-600 font-medium">Explore</a>
+    <a href="/about" class="hover:text-red-600 font-medium">About</a>
+
+    <% if (user) { %>
+      <!-- User Profile Dropdown -->
+      <div class="relative" id="profileMenuWrapper">
+        <img src="<%= user.profileImage || '/images/default-profile.png' %>" 
+             class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300" 
+             id="profileIcon" />
+        <!-- Dropdown Menu -->
+        <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded shadow-md">
+          <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
+          <a href="/boards" class="block px-4 py-2 hover:bg-gray-100">My Boards</a>
+          <form action="/logout" method="POST">
+            <button type="submit" class="w-full text-left px-4 py-2 hover:bg-gray-100">Logout</button>
+          </form>
+        </div>
+      </div>
+    <% } else { %>
+      <!-- Login / Signup -->
+      <a href="/login" class="px-4 py-2 bg-red-600 text-white rounded-full ">Login</a>
+      <a href="/register" class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700">Sign Up</a>
+    <% } %>
+  </div>
+</nav>
+
+<script>
+  // Profile dropdown toggle
+  const profileIcon = document.getElementById('profileIcon');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if(profileIcon) {
+    profileIcon.addEventListener('click', () => {
+      profileMenu.classList.toggle('hidden');
+    });
+  }
+
+  // Close dropdown if clicked outside
+  document.addEventListener('click', function(event) {
+    if(profileMenu && !profileMenu.contains(event.target) && !profileIcon.contains(event.target)) {
+      profileMenu.classList.add('hidden');
+    }
+  });
+</script>
+
+
+<div class="max-w-6xl mx-auto p-6 mt-20">
+  <!-- Page Title -->
+  <h1 class="text-4xl font-bold mb-4">About Our Project</h1>
+
+  <!-- Project Description -->
+  <p class="text-lg mb-6">
+    This Pinterest clone is a full-stack web application designed to explore and save images in various categories. 
+    Users can browse pins, search for specific topics, create boards, and manage their profiles.
+  </p>
+
+  <!-- Features Section -->
+  <h2 class="text-2xl font-semibold mb-2">Features</h2>
+  <ul class="list-disc ml-6 mb-6">
+    <li>User authentication and profile management.</li>
+    <li>Dynamic feed of pins with categories and search functionality.</li>
+    <li>Ability to save and manage favorite pins on boards.</li>
+    <li>Responsive UI built with Tailwind CSS and EJS templates.</li>
+  </ul>
+
+  <!-- Tech Stack Section -->
+  <h2 class="text-2xl font-semibold mb-2">Tech Stack</h2>
+  <p class="mb-4">
+    Frontend: HTML, CSS, Tailwind, EJS <br>
+    Backend: Node.js, Express, MongoDB, Passport.js
+  </p>
+
+  <!-- Footer -->
+  <p class="text-gray-600 fixed bottom-0 right-50">© 2025 Pinterest Clone Project. All rights reserved.</p>
+</div>
+
+<%- include('partials/footer') %>
+

@@ -1,14 +1,97 @@
-<nav class="fixed h-16 top-0 left-0 w-full z-50 bg-white shadow-md flex justify-between items-center px-6 py-4 pointer-events-auto">
-    <div class="flex justify-between items-center font-bold gap-5">
-        <a href="/" class="text-red-600 text-xl">Pinterest</a>
-        <a>Explore</a>
-    </div>
-    <div class="flex justify-between items-center gap-5 text-blue-600">
-        <a>About</a>
-        <a>Create</a>
-        <a>News</a>
-        <a href="/login" class="bg-red-600 text-white p-2 rounded-xl inline-block">Log in</a>
-        <a href="/signup" class="bg-gray-200 text-black p-2 rounded-xl inline-block">Sign up</a>
-    </div>
-</nav>
+<% if(nav === false){ %>
+    <nav class="fixed h-16 top-0 left-0 w-full z-50 bg-white shadow-md flex justify-between items-center px-6 py-4 pointer-events-auto">
+        <div class="flex justify-between items-center font-bold gap-5">
+            <a href="/" class="text-red-600 text-xl">Pinterest</a>
+            <a href="/explore">Explore</a>
+        </div>
+        <div class="flex justify-between items-center gap-5 text-blue-600">
+            <a href="/about">About</a>
+            <a href="/login" class="bg-red-600 text-white p-2 rounded-xl inline-block">Log in</a>
+            <a href="/signup" class="bg-gray-200 text-black p-2 rounded-xl inline-block">Sign up</a>
+        </div>
+    </nav>
+<%} 
+else {%>
+    <nav class="fixed h-16 top-0 left-0 w-full z-50 bg-white shadow-md flex items-center px-6 py-4 gap-6">
+        <!-- Logo -->
+        <a href="<%= user ? '/feed' : '/' %>" class="text-red-600 text-xl font-bold">Pinterest</a>
+
+
+        <!-- Search Bar -->
+        <!-- Navbar Search Form -->
+        <form action="/feed" method="GET" class="flex-1 relative">
+            <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <input 
+                name="q"
+                type="text" 
+                placeholder="Search"
+                value="<%= typeof query !== 'undefined' ? query : '' %>"
+                class="w-full p-2 pl-10 rounded-xl bg-gray-200 focus:outline-none "
+            />
+        </form>
+
+
+
+
+
+        <!-- Profile Icon -->
+        <!-- Navbar profile icon -->
+        <div class="relative" id="profileMenuWrapper">
+                <!-- Profile Icon -->
+                <img src="<%= user.profileImage || '/images/default-profile.png' %>" 
+                    class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300" 
+                    id="profileIcon" 
+                    alt="Profile" />
+
+                <!-- Dropdown Menu (hidden by default) -->
+                <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md overflow-hidden z-50">
+                    
+                    <!-- Profile Info -->
+                    <div class="flex flex-col justify-center items-center p-4">
+                    <img src="<%= user.profileImage || '/images/default-profile.png' %>" class="w-16 h-16 rounded-full mb-2"/>
+                    <h2 class="text-lg font-semibold"><%= user.name || user.username %></h2>
+                    <p class="text-sm text-gray-500">@<%= user.username %></p>
+                    </div>
+                    
+                    <!-- Dropdown Buttons -->
+                    <div class="flex flex-col p-2 space-y-2">
+                    <!-- Button to go to profile page -->
+                    <a href="/profile" class="text-center bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-xl font-semibold">
+                        View Profile
+                    </a>
+
+                    <!-- Logout Button -->
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="w-full text-center bg-red-500  hover:bg-red-600 text-white px-3 py-2 rounded-xl font-semibold">
+                        Logout
+                        </button>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <script>
+            // Toggle dropdown visibility
+            const profileIcon = document.getElementById('profileIcon');
+            const profileDropdown = document.getElementById('profileDropdown');
+
+            profileIcon.addEventListener('click', () => {
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (e) => {
+                if (!profileMenuWrapper.contains(e.target)) {
+                profileDropdown.classList.add('hidden');
+                }
+            });
+        </script>
+
+
+    </nav>
+
+<% }
+    %>
+
 

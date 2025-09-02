@@ -1,6 +1,8 @@
 <% include  ./partials/header.ejs %>
-<% include ./partials/navbar.ejs %>
-    <div class="w-full mt-16 h-[90vh] bg-center bg-cover bg-[url('/images/pin-bg-1.jpg')]">
+<%- include('./partials/header.ejs') %>
+<%- include('./partials/navbar.ejs', { nav: false }) %>
+
+    <div class="w-full mt-16 h-[90.2vh] bg-center bg-cover bg-[url('/images/pin-bg-1.jpg')]">
     <div class="flex items-center justify-center">
     <div class=" mt-10 w-[400px] bg-white px-4 py-5 rounded-4xl">        
         <div class="flex items-center justify-center mb-5">

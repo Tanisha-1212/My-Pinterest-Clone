@@ -1,0 +1,77 @@
+<% include  ./partials/header.ejs %>
+
+    <nav class="bg-white shadow p-4 flex justify-between items-center">
+      <!-- Left: Logo and links -->
+      <div class="flex items-center space-x-4">
+        <a href="/" class="font-bold text-xl text-red-600">Pinterest</a>
+        <a href="/explore" class="hover:text-gray-700 font-bold">Explore</a>
+        <a href="/about" class="hover:text-gray-700 font-bold">About</a>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="flex-1 mx-4 relative max-w-xl">
+        <form action="/search" method="GET">
+          <!-- Search Icon -->
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+            <i class="ri-search-line text-lg"></i>
+          </span>
+
+          <!-- Input Field -->
+          <input 
+            type="text" 
+            name="q" 
+            placeholder="Search for pins, boards, or users..." 
+            class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:bg-white transition duration-200"
+          />
+        </form>
+      </div>
+
+
+
+        <!-- Right: Authentication -->
+        <div class="flex items-center space-x-4">
+            <a href="/login" class="bg-red-500 px-2 py-2  rounded-2xl text-white">Login</a>
+            <a href="/signup" class="bg-red-500 px-2 py-2  rounded-2xl text-white">Signup</a>     
+        </div>
+    </nav>
+
+<!--Categories-->
+    <div class="grid md:grid-cols-4 sm:grid-cols-2 gap-6 mt-20 px-4">
+  <% categories.forEach(category => { %>
+    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      
+      <!-- Category preview pins -->
+      <div class="flex w-full h-40">
+        <% if(category.previewPins.length === 1) { %>
+          <img src="<%= category.previewPins[0].image %>" class="w-full h-full object-cover" />
+        <% } else if(category.previewPins.length >= 2) { %>
+          <img src="<%= category.previewPins[0].image %>" class="w-1/2 h-full object-cover" />
+          <img src="<%= category.previewPins[1].image %>" class="w-1/2 h-full object-cover" />
+        <% } else { %>
+          <div class="w-full h-full flex items-center justify-center text-gray-400">
+            No Pins
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Category info -->
+      <div class="p-2">
+        <h3 class="text-lg font-semibold truncate"><%= category.name %></h3>
+        <p class="text-sm text-gray-500"><%= category.totalPins %> pins</p>
+      </div>
+
+    </div>
+  <% }) %>
+</div>
+
+<!--Script-->
+
+<script>
+function openCategory(categoryName) {
+  // Navigate to a category page
+  window.location.href = `/category/${encodeURIComponent(categoryName)}`;
+}
+</script>
+
+
+<% include  ./partials/footer.ejs %>
