@@ -1,14 +1,29 @@
 <% include  ./partials/header.ejs %>
 <%- include('./partials/navbar.ejs', { nav: true }) %>
 
-    <div class="columns-1 sm:columns-2 md:columns-4 lg:columns-6 gap-4 space-y-2 p-2 mt-20">
-      <% pins.forEach(pin => { %>
-        <div class="break-inside-avoid bg-white overflow-hidden mb-4">
-          <img src="<%= pin.image %>" alt="<%= pin.title %>" class="w-full rounded-lg">
-          <div class="p-1"><%= pin.title %></div>
-        </div>
-      <% }) %>
-    </div>
+<div class="columns-1 sm:columns-4 md:columns-6 gap-4 p-6 mt-16">
+  <% pins.forEach(pin => { %>
+    <a href="/pin/<%= pin._id %>">
+    <div class="break-inside-avoid mb-4 relative group bg-white rounded-lg overflow-hidden">
 
+      <!-- Pin Image -->
+      <img src="<%= pin.image %>" class="w-full rounded-lg object-cover"/>
+
+      <!-- Pin Info -->
+      <div class="p-1">
+        <h2 class="text-sm"><%= pin.title %></h2>
+      </div>
+
+    </div>
+    </a>
+  <% }) %>
+</div>
+
+<script>
+function openPin(id) {
+  window.location.href = `/pin/${id}`;
+}
+</script>
 
 <% include  ./partials/footer.ejs %>
+

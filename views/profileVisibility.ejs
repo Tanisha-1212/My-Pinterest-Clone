@@ -1,0 +1,29 @@
+<% include ./partials/header.ejs %>
+<%- include('./partials/navbar.ejs', { nav: true, user: user }) %>
+
+<div class="flex min-h-screen mt-16">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+    <h2 class="text-xl font-bold mb-4">Settings</h2>
+    <nav class="flex flex-col space-y-3">
+      <a href="/edit-profile" class="text-gray-700 hover:text-red-500 font-medium">Edit Profile</a>
+      <a href="/account-management" class="text-gray-700 hover:text-red-500 font-medium">Account Management</a>
+      <a href="/profile-visibility" class="text-gray-700 hover:text-red-500 font-medium">Profile Visibility</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 bg-gray-50 p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto space-y-6">
+      <h1 class="text-2xl font-bold mb-4">Profile Visibility</h1>
+      
+      <form action="/profile-visibility" method="POST" class="flex items-center space-x-4">
+        <label for="isPrivate" class="font-medium text-gray-700">Make my profile private (only followers can see my pins)</label>
+        <input type="checkbox" name="isPrivate" id="isPrivate" class="h-5 w-5" <%= user.isPrivate ? 'checked' : '' %>>
+        <button type="submit" class="bg-gray-300 text-black py-2 px-4 rounded-lg hover:bg-gray-200 transition">Save</button>
+      </form>
+    </div>
+  </main>
+</div>
+
+<% include ./partials/footer.ejs %>

@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+<%- include('./partials/navbar.ejs', { nav: true }) %>
+
+<main class="max-w-6xl mx-auto mt-8 p-4 mt-16">
+
+  <!-- Back button -->
+  <div class="flex justify-end mb-4">
+    <a href="/profile" class="flex items-center text-black hover:underline">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back
+    </a>
+  </div>
+
+  <!-- Board Title -->
+  <h2 class="text-2xl font-bold mb-6"><%= board.name %></h2>
+
+  <!-- Pins Grid -->
+  <% if (board.pins && board.pins.length > 0) { %>
+    <div class="columns-2 sm:columns-3 md:columns-4 gap-4 space-y-4">
+      <% board.pins.forEach(pin => { %>
+        <a href="/pins/<%= pin._id %>" class="block break-inside-avoid rounded overflow-hidden hover:scale-105 transition-transform">
+          <img src="<%= pin.image %>" alt="<%= pin.title %>" class="w-full object-cover rounded">
+          <div class="p-1 bg-white">
+            <h3 class="text-sm font-semibold"><%= pin.title %></h3>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="mt-6 text-gray-500">No pins in this board yet.</p>
+  <% } %>
+
+</main>
+
+<%- include('partials/footer') %>

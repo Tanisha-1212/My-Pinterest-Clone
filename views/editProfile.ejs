@@ -1,0 +1,57 @@
+<% include ./partials/header.ejs %>
+<%- include('./partials/navbar.ejs', { nav: true, user: user }) %>
+
+<div class="flex min-h-screen mt-16">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+    <h2 class="text-xl font-bold mb-4">Settings</h2>
+    <nav class="flex flex-col space-y-3">
+      <a href="/edit-profile" class="text-gray-700 hover:text-red-500 font-medium">Edit Profile</a>
+      <a href="/account-management" class="text-gray-700 hover:text-red-500 font-medium">Account Management</a>
+      <a href="/profile-visibility" class="text-gray-700 hover:text-red-500 font-medium">Profile Visibility</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 bg-gray-50 p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
+      <h1 class="text-2xl font-bold mb-6">Edit Profile</h1>
+
+      <!-- Edit Profile Form -->
+      <form action="/edit-profile" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <!-- Profile Picture -->
+        <div class="flex items-center space-x-4">
+          <img src="<%= user.profileImage || '/images/default-profile.png' %>" 
+               alt="Profile" 
+               class="w-20 h-20 rounded-full border border-gray-300 object-cover">
+          <div>
+            <label for="profileImage" class="block text-sm font-medium text-gray-700">Change Profile Picture</label>
+            <input type="file" name="profileImage" id="profileImage" class="mt-2 text-sm">
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+          <input type="text" name="username" id="username" value="<%= user.username %>"
+                 class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2">
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" name="email" id="email" value="<%= user.email %>"
+                 class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2">
+        </div>
+
+        <!-- Save Button -->
+        <button type="submit" 
+                class="bg-red-500 text-white w-full py-2 rounded-lg hover:bg-red-600 transition">
+          Save
+        </button>
+      </form>
+    </div>
+  </main>
+</div>
+
+<% include ./partials/footer.ejs %>

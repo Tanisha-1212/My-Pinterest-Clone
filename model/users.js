@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
-    trim: true
+    trim: true,
+    required: true
   },
   email: {
     type: String,
@@ -18,16 +19,30 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String
   },
+  profileImage: {
+    type: String,
+    default: '/images/default-profile.png' // default profile picture
+  },
   createdAt: {
     type: Date,
     default: Date.now
   },
-  profileImage: {
-    type: String, // optional default profile image
-  },
   boards: {
-    type: [String], // array of strings instead of generic Array
-    default: []
+    type: [String],
+    default: [] // ensures every user has a boards array
+  },
+  boardsPins: {
+    type: Map,
+    of: [String], // stores array of pin IDs per board
+    default: {}
+  },
+  active: {
+    type: Boolean,
+    default: true // for account deactivation
+  },
+  isPrivate: {
+    type: Boolean,
+    default: false // public by default
   }
 });
 

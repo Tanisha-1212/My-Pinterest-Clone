@@ -1,0 +1,184 @@
+<% include ./partials/header.ejs %>
+<%- include('./partials/navbar.ejs', { nav: true }) %>
+
+<div class="max-w-4xl mx-auto mt-18 px-4">
+
+  <!-- Main Pin Section -->
+  <div class="max-w-6xl mx-auto mt-10 p-4 relative">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row gap-6">
+      
+      <!-- Image Section -->
+      <div class="md:w-1/2 rounded-xl m-4 overflow-hidden relative">
+        <img 
+          src="<%= pin.image %>" 
+          class="object-contain h-auto w-full rounded-xl" 
+          alt="<%= pin.title %>"
+        />
+
+        <!-- Back Arrow -->
+        <button 
+          onclick="history.back()" 
+          class="absolute top-4 left-4 bg-white bg-opacity-70 hover:bg-opacity-100 text-gray-800 p-2 rounded-full shadow-md flex items-center justify-center"
+        >
+          <i class="ri-arrow-left-line text-2xl"></i>
+        </button>
+      </div>
+
+      <!-- Details Section -->
+      <div class="md:w-1/2 p-4 flex flex-col">
+        <!-- Pin Info -->
+        <div class="space-y-4">
+          <h1 class="text-2xl md:text-3xl font-semibold"><%= pin.title %></h1>
+          <p class="text-gray-700"><%= pin.description %></p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3 mt-4">
+          <button onclick="openSaveModal('<%= pin._id %>')" 
+                  class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600">
+            Save
+          </button>
+
+          <button onclick="likePin('<%= pin._id %>')" 
+                  class="text-black py-2 px-4 rounded-lg flex items-center gap-1">
+            <i class="ri-heart-line text-xl"></i>
+            <span id="likeCount" class="text-xl"><%= pin.likes ? pin.likes.length : 0 %></span>
+          </button>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mt-6">
+          <h2 class="font-semibold text-lg"><i class="ri-chat-1-line"></i> Comments</h2>
+          <form id="commentForm" class="flex mt-2 gap-2">
+            <input type="text" id="commentInput" placeholder="Add a comment" class="flex-1 border rounded px-2 py-1">
+            <button type="submit" class="bg-red-500 text-white px-3 rounded">Post</button>
+          </form>
+
+          <div id="commentsList" class="mt-4 space-y-2 max-h-80 overflow-y-auto">
+            <% if (pin.comments && pin.comments.length > 0) { %>
+              <% pin.comments.forEach(comment => { %>
+                <div class="p-2 border rounded">
+                  <span class="font-semibold"><%= comment.user?.username || 'Anonymous' %>:</span> 
+                  <span><%= comment.text %></span>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <p class="text-gray-500 text-sm">No comments yet.</p>
+            <% } %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Related Pins Masonry -->
+<h2 class="text-xl font-semibold mb-4">Related Pins</h2>
+<div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+  <% relatedPins.forEach(rpin => { %>
+    <a href="/pin/<%= rpin._id %>">
+      <div class="break-inside-avoid mb-4 relative group bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        <img src="<%= rpin.image %>" class="w-full object-cover rounded-lg"/>
+        <div class="p-1">
+          <h2 class="text-sm text-gray-800"><%= rpin.title %></h2>
+        </div>
+      </div>
+    </a>
+  <% }) %>
+</div>
+
+<!-- Save to Board Modal -->
+<div id="saveModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-96">
+    <h2 class="text-lg font-bold mb-4">Save to Board</h2>
+
+    <div id="boardsList" class="mb-4">
+      <!-- Boards buttons will be loaded here -->
+    </div>
+
+    <input type="text" id="newBoardName" placeholder="Create new board" class="border p-2 w-full mb-4"/>
+
+    <button id="savePinBtn" class="bg-red-500 text-white py-2 px-4 rounded-lg w-full hover:bg-red-600">
+      Save
+    </button>
+
+    <button onclick="closeSaveModal()" class="mt-2 text-gray-500 hover:underline w-full text-center">Cancel</button>
+  </div>
+</div>
+
+<script>
+let currentPinId = null;
+let selectedBoardId = null;
+
+function openSaveModal(pinId) {
+  currentPinId = pinId;
+  document.getElementById('saveModal').classList.remove('hidden');
+
+  // Fetch user's boards
+  fetch('/boards')
+    .then(res => res.json())
+    .then(data => {
+      const boardsDiv = document.getElementById('boardsList');
+      boardsDiv.innerHTML = '';
+      data.boards.forEach(board => {
+        const btn = document.createElement('button');
+        btn.textContent = board.name;
+        btn.className = 'border p-2 w-full mb-2 text-left hover:bg-gray-100';
+        btn.onclick = () => selectedBoardId = board._id;
+        boardsDiv.appendChild(btn);
+      });
+    });
+}
+
+function closeSaveModal() {
+  document.getElementById('saveModal').classList.add('hidden');
+  currentPinId = null;
+  selectedBoardId = null;
+}
+
+document.getElementById('savePinBtn').addEventListener('click', () => {
+  const newBoardName = document.getElementById('newBoardName').value.trim();
+
+  fetch('/save-pin-to-board', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pinId: currentPinId, boardId: selectedBoardId, newBoardName })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert(data.message);
+    closeSaveModal();
+  });
+});
+
+async function likePin(pinId) {
+  const res = await fetch('/like-pin', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ pinId })
+  });
+  if (res.ok) {
+    const data = await res.json();
+    document.getElementById('likeCount').innerText = data.likesCount;
+  } else alert('Error liking pin');
+}
+
+document.getElementById('commentForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = document.getElementById('commentInput').value.trim();
+  if (!text) return;
+
+  const res = await fetch('/add-comment', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ pinId: '<%= pin._id %>', text })
+  });
+
+  if (res.ok) location.reload();
+  else alert('Error adding comment');
+});
+</script>
+
+<% include ./partials/footer.ejs %>
+

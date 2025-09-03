@@ -22,42 +22,31 @@
             <h1 class="text-3xl font-semibold mt-3"><%= user.username %></h1>
             <h3 class="text-md mb-2">@<%= user.email.split('@')[0] %></h3>
             <div class="flex flex-row gap-2">
-            <a class="px-5 py-2 bg-zinc-300 rounded-xl">Edit Profile</a>
-            <button class="px-5 py-2 bg-zinc-300 rounded-xl">Create Pin</button>
+            <a href="/edit-profile" class="px-5 py-2 bg-red-500 text-white rounded-xl hover:bg-black hover:text-white">Edit Profile</a>
+            <a href="/createPin" class="px-5 py-2 bg-red-500 text-white rounded-xl hover:bg-black hover:text-white">Create Pin</a>
             </div>
         </div>
 
         <!--Boards-->
-        <div class="cards flex flex-wrap gap-6 justify-center">
-            <% boards.forEach(board => { %>
-                <div class="card w-60 bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                
-                <!-- Pins Section -->
-                <div class="w-full h-40 flex">
-                    <% if (board.pins.length === 1) { %>
-                    <!-- Single pin fills entire space -->
-                    <img class="w-full h-full object-cover" src="<%= board.pins[0].image %>" alt="<%= board.pins[0].title %>">
-                    <% } else if (board.pins.length >= 2) { %>
-                    <!-- Two pins side by side -->
-                    <img class="w-1/2 h-full object-cover" src="<%= board.pins[0].image %>" alt="<%= board.pins[0].title %>">
-                    <img class="w-1/2 h-full object-cover" src="<%= board.pins[1].image %>" alt="<%= board.pins[1].title %>">
-                    <% } else { %>
-                    <!-- No pins -->
-                    <div class="w-full h-full flex items-center justify-center text-gray-400">
-                        No Image
-                    </div>
-                    <% } %>
-                </div>
-
-                <!-- Board Info -->
-                <div class="p-2">
-                    <h3 class="text-lg font-semibold text-gray-800 truncate"><%= board.name %></h3>
-                    <p class="text-sm text-gray-500 "><%= board.pins.length %> pins</p>
-                </div>
-
-                </div>
+        <h2>Your Boards</h2>
+        <% boards.forEach(board => { %>
+         <a href="/boards/<%= board._id %>" class="font-bold text-lg hover:underline">   
+        <div class="board mb-6">
+            <h2 class="font-semibold text-lg mb-2"><%= board.name %></h2>
+            <div class="flex flex-wrap gap-2">
+            <% board.pins.slice(0, 4).forEach(pin => { %>
+                <a href="/pins/<%= pin._id %>">
+                <img src="<%= pin.image %>" class="w-16 h-16 object-cover rounded" />
+                </a>
             <% }) %>
+            </div>
         </div>
+        </a>
+        <% }) %>
+
+
+
+
     </div>
 
     <script>

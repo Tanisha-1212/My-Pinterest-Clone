@@ -38,23 +38,24 @@ else {%>
         <!-- Navbar profile icon -->
         <div class="relative" id="profileMenuWrapper">
                 <!-- Profile Icon -->
-                <img src="<%= user.profileImage || '/images/default-profile.png' %>" 
-                    class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300" 
-                    id="profileIcon" 
-                    alt="Profile" />
+                <img src="<%= (user && user.profileImage) ? user.profileImage : '/images/default-profile.png' %>"
+                class="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300"
+                id="profileIcon"
+                alt="Profile" />
+
 
                 <!-- Dropdown Menu (hidden by default) -->
                 <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md overflow-hidden z-50">
                     
                     <!-- Profile Info -->
                     <div class="flex flex-col justify-center items-center p-4">
-                    <img src="<%= user.profileImage || '/images/default-profile.png' %>" class="w-16 h-16 rounded-full mb-2"/>
+                    <img src="<%= user.profileImage%>" class="w-16 h-16 rounded-full mb-2"/>
                     <h2 class="text-lg font-semibold"><%= user.name || user.username %></h2>
-                    <p class="text-sm text-gray-500">@<%= user.username %></p>
+                    <p class="text-sm text-gray-500">@<%= user.email.split('@')[0] %></p>
                     </div>
                     
                     <!-- Dropdown Buttons -->
-                    <div class="flex flex-col p-2 space-y-2">
+                    <div class="flex flex-col p-2 space-y-2 items-center">
                     <!-- Button to go to profile page -->
                     <a href="/profile" class="text-center bg-red-500 hover:bg-red-600 px-3 py-2 text-white rounded-xl font-semibold">
                         View Profile
@@ -62,7 +63,7 @@ else {%>
 
                     <!-- Logout Button -->
                     <form action="/logout" method="POST">
-                        <button type="submit" class="w-full text-center bg-red-500  hover:bg-red-600 text-white px-3 py-2 rounded-xl font-semibold">
+                        <button type="submit" class="text-center bg-red-500  hover:bg-red-600 text-white px-3 py-2 rounded-xl font-semibold">
                         Logout
                         </button>
                     </form>

@@ -1,0 +1,56 @@
+<% include ./partials/header.ejs %>
+<%- include('./partials/navbar.ejs', { nav: true, user: user }) %>
+
+<div class="flex min-h-screen mt-16">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-lg p-6 space-y-6">
+    <h2 class="text-xl font-bold mb-4">Settings</h2>
+    <nav class="flex flex-col space-y-3">
+      <a href="/edit-profile" class="text-gray-700 hover:text-red-500 font-medium">Edit Profile</a>
+      <a href="/account-management" class="text-gray-700 hover:text-red-500 font-medium">Account Management</a>
+      <a href="/profile-visibility" class="text-gray-700 hover:text-red-500 font-medium">Profile Visibility</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 bg-gray-50 p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto space-y-8">
+      <h1 class="text-2xl font-bold mb-6">Account Management</h1>
+
+      <!-- Change Email -->
+      <form action="/account-management/change-email" method="POST" class="space-y-2">
+        <h2 class="font-semibold text-sm">Change Email</h2>
+        <input type="email" name="newEmail" placeholder="New Email" 
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required>
+        <button type="submit" class="bg-gray-300 text-black w-full py-2 rounded-lg hover:bg-gray-200 transition">Update Email</button>
+      </form>
+
+      <!-- Change Password -->
+      <form action="/account-management/change-password" method="POST" class="space-y-2">
+        <h2 class="font-semibold text-sm">Change Password</h2>
+        <input type="password" name="currentPassword" placeholder="Current Password" 
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required>
+        <input type="password" name="newPassword" placeholder="New Password" 
+               class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" required>
+        <button type="submit" class="bg-gray-300 text-black w-full py-2 rounded-lg hover:bg-gray-200 transition">Update Password</button>
+      </form>
+
+      <!-- Deactivate Account -->
+      <form action="/account-management/deactivate" method="POST" class="space-y-2">
+        <h2 class="font-semibold text-lg">Deactivate Account</h2>
+        <p class="text-gray-600 text-sm">Your account will be temporarily disabled.</p>
+        <button type="submit" class="bg-gray-300 text-black w-full py-2 rounded-lg hover:bg-gray-200 transition">Deactivate</button>
+      </form>
+
+      <!-- Delete Account -->
+      <form action="/account-management/delete" method="POST" class="space-y-2">
+        <h2 class="font-semibold text-lg">Delete Account</h2>
+        <p class="text-gray-600 text-sm">This action is permanent and cannot be undone.</p>
+        <button type="submit" class="bg-gray-300 text-black w-full py-2 rounded-lg hover:bg-gray-200 transition">Delete Account</button>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<% include ./partials/footer.ejs %>
